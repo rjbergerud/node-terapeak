@@ -1,0 +1,32 @@
+{
+    "optionGroups": {
+        "CategoryQuery": {
+            "name": "CategoryQuery",
+            "type": "group",
+            "children": [
+                    {
+                        "name": "Currency",
+                        "type": "string"
+                    },
+                    {
+                        "name": "SiteID",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "Categories",
+                        "type": "group",
+                    }
+                ]
+            }
+    },
+    "methods" : [
+        {
+            "name": "GetCategorySellers",
+            "optionGroups": [
+                "CategoryQuery"
+            ],
+            "options": [
+            ]
+        }
+    ]
+}
