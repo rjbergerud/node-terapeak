@@ -15,17 +15,73 @@
                     {
                         "name": "Categories",
                         "type": "group",
+                        "children": [
+                            {
+                                "name": "CategoryID",
+                                "type": "integer",
+                                "array": "true"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Dates",
+                        "type": "group"
                     }
                 ]
-            }
+        },
+        "Dates": {
+            "name": "Dates",
+            "type": "group",
+            "children": [
+                {
+                    "name": "StartDate",
+                    "type": "date"
+                },
+                {
+                    "name": "EndDate",
+                    "type": "date"
+                },
+                {
+                    "name": "Date",
+                    "type": "date"
+                },
+                {
+                    "name": "DateRange",
+                    "type": "integer"
+                }
+            ]
+        },
+        "Page": {
+            "name": "Page",
+            "type": "group",
+            "children": [
+                {
+                    "name": "Order",
+                    "type": "enum",
+                    "values": [
+                        "sales_rank",
+                        "category_name",
+                        "hot",
+                        "success",
+                        "end_price"
+                    ]
+                },
+                {
+                    "name": "OrderDir",
+                    "type": ""
+                }
+            ]
+        }
+
     },
     "methods" : [
         {
             "name": "GetCategorySellers",
             "optionGroups": [
-                "CategoryQuery"
+                "CategoryQuery",
             ],
             "options": [
+                ""
             ]
         }
     ]

@@ -27,10 +27,11 @@
 var request = require('request');
 var xml2js = require('xml2js');
 var xmlbuilder = require('xmlbuilder');
+var _ = require('underscore');
 
 var apiMethods = require('./api-methods.json');
 
-setOptionGroups(apiMethods);
+initializeOptionGroups(apiMethods);
 
 
 var API_VERSION = 2;
@@ -53,10 +54,32 @@ Terapeak.prototype.listMethods() {
 Terapeak.prototype._call(name, options, callback) {
     var method = apiMethods.methods[name];
     var xml = builder.create(name);
-    addXmlOption(xml, method.)
+    addSimpleXmlOption(xml, options);
+
+    var body = xml.end({ pretty: true });
+
+    // TODO: post body, get result, parse & return
 }
 
-function addXmlOption(xml, option, value) {
+function addSimpleXmlOption(xml, options) {
+    _.chain(options).keys(function(name) {
+        var optionXml = xml.ele(name);
+        var value = options[name];
+        if (_.isArray(value)) {
+            for (i = 0; i < value.length; i++) {
+                addSimpleXmlOption(optionXml, value[i]);
+            }
+        } else if(_.isObject(value)) {
+            addSimpleXmlOption(optionXml, value);
+        } else {
+            optionXml.txt(value);
+        }
+    });
+}
+
+// Following two methods are for validating input against the full api-structure.
+// Ignore for now...
+function addXmlValidatedOption(xml, option, value) {
     if (option === null || option === undefined || value === null || value === undefined) {
         return xml;
     }
@@ -87,7 +110,7 @@ function addXmlOption(xml, option, value) {
     return xml;
 }
 
-function setOptionGroups(api) {
+function initializeOptionGroups(api) {
     var optionGroups = api.optionGroups;
     for (var i = 0; i < api.methods.length; i++) {
         var method = api.methods[i];
