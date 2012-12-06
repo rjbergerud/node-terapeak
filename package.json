@@ -7,9 +7,9 @@
     "type": "git",
     "url": "git://github.com/benblair/node-terapeak.git"
   },
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
-    "test": "node test/runall.js"
+    "test": "mocha"
   },
   "dependencies": {
     "request": "2.12.x",
@@ -17,7 +17,9 @@
     "xmlbuilder": "0.4.x",
     "underscore": "1.4.x"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "1.7.x"
+    },
   "optionalDependencies": {},
   "engines": {
     "node": "*"
