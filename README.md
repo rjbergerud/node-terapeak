@@ -2,7 +2,19 @@
 
 Node module wrapping the TeraPeak API. See https://developer.terapeak.com for API documentations
 
-# License
+## Status
+
+Don't use this yet -- it's very unstable. 
+
+## Install
+
+        $ npm install -g terapeak
+
+## terapeak(1)
+
+        $ terapeak --help for usage
+
+## License
 
 (The MIT License)
 
