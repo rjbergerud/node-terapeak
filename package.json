@@ -2,7 +2,7 @@
   "author": "Ben Blair <benblair@gmail.com>",
   "name": "terapeak",
   "description": "Unofficial wrapper for the TeraPeak API (see https://developer.terapeak.com).",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
     "url": "git://github.com/benblair/node-terapeak.git"
@@ -10,6 +10,9 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha"
+  },
+  "bin": {
+    "terapeak": "./bin/terapeak"
   },
   "dependencies": {
     "request": "2.12.x",
