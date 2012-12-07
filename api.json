@@ -1,0 +1,144 @@
+{
+    "documentation": {
+        "url": "https://developer.terapeak.com/docs/read/Home",
+        "researchRoot": "https://developer.terapeak.com/docs/read/researchapi/",
+        "restrictedRoot": "https://developer.terapeak.com/docs/read/researchapi/restricted_calls/"
+    },
+    "methods": [
+        {
+            "name": "GetCategorySellers",
+            "isCategoryQuery": true,
+            "restricted": false,
+            "description": "The GetCategorySellers API call retrieves a list of sellers from a given category allowing you to browse the category by seller."
+        },
+        {
+            "name": "GetCategoryStructure",
+            "isCategoryQuery": true,
+            "restricted": false,
+            "description": "The GetCategoryStructure API call retrieves a list of categories, displaying the category depth and result ranking."
+        },
+        {
+            "name": "GetCategoryTopTitles",
+            "isCategoryQuery": true,
+            "restricted": false,
+            "description": "The GetCategoryTopTitles API call retrieves a list of top titles from a selected category."
+        },
+        {
+            "name": "GetCategoryTrends",
+            "isCategoryQuery": true,
+            "restricted": false,
+            "description": "The GetCategoryTrends API call retrieves graphed trend data for a category search. It can return trends up to 90 days, and breakdowns by week, day, or hour."
+        },
+        {
+            "name": "GetCategoryHotList",
+            "restricted": false,
+            "description": "The GetCategoryHotList API looks at a category by category overview of listings growth vs. bid growth to determine categories that are attracting buyers faster then sellers. It can return these categories along with various methods of ranking them for a single day, for all of the sites available through the API."
+        },
+        {
+            "name": "GetHotProducts",
+            "isSearchQuery": true,
+            "restricted": false,
+            "description": "The GetHotProducts API call retrieves a list of products that are determined to be \"hot\"."
+        },
+        {
+            "name": "GetMediaHotList",
+            "isSearchQuery": true,
+            "restricted": false,
+            "description": "The GetMediaHotList API call retrieves a list of media that are determined to be \"hot\"."
+        },
+        {
+            "name": "GetTopTitles",
+            "restricted": false,
+            "description": "The GetTopTitles API call retrieves a list of all items from a given category allowing you to browse the category."
+        },
+        {
+            "name": "GetResearchResults",
+            "isSearchQuery": true,
+            "restricted": false,
+            "description": "The GetResearchResults API call is used to retrieve basic pre-calculated statistics for a specific set of keywords, along with other filters. This call has REST support."
+        },
+        {
+            "name": "GetResearchSellers",
+            "isSearchQuery": true,
+            "restricted": false,
+            "description": "The GetResearchSellers API call can be used to retrieve top sellers for a keyword."
+        },
+        {
+            "name": "GetResearchTrends",
+            "isSearchQuery": true,
+            "isTrendQuery": true,
+            "restricted": false,
+            "description": "The GetResearchTrends API call retrieves graphed trend data for a search using the inputs provided in the GetResearchResults call. It can return trends up to 90 days and breakdowns by week, day, or hour."
+        },
+        {
+            "name": "GetSellerResearchResults",
+            "isSearchQuery": true,
+            "restricted": false,
+            "description": "The GetSellerResearchResults API call retrieves seller specific research in a similar manner to the GetResearchResults call. All of the same filters available in the GetResearchResults call are available here, plus the Seller Filters."
+        },
+        {
+            "name": "GetSellerResearchTrends",
+            "isSearchQuery": true,
+            "restricted": false,
+            "description": ""
+        },
+        {
+            "name": "GetSellerTopTitles",
+            "isSearchQuery": true,
+            "restricted": false,
+            "description": ""
+        },
+        {
+            "name": "GetItemConditionLookups",
+            "restricted": false,
+            "description": ""
+        },
+        {
+            "name": "GetItemSpecificSets",
+            "isSearchQuery": true,
+            "restricted": false,
+            "description": ""
+        },
+        {
+            "name": "GetPriceResearch",
+            "isSearchQuery": true,
+            "restricted": false,
+            "description": ""
+        },
+        {
+            "name": "GetSingleItemDetails",
+            "isSearchQuery": true,
+            "restricted": false,
+            "description": ""
+        },
+        {
+            "name": "GetSystemDates",
+            "restricted": false,
+            "description": ""
+        },
+        {
+            "name": "GetTitleBuilderResults",
+            "isSearchQuery": true,
+            "restricted": false,
+            "description": ""
+        },
+        {
+            "name": "GetCategoryItems",
+            "isCategoryQuery": true,
+            "restricted": false,
+            "description": ""
+        },
+        {
+            "name": "GetResearchItems",
+            "isSearchQuery": true,
+            "restricted": false,
+            "description": ""
+        },
+        {
+            "name": "GetSellerResearchItems",
+            "isSearchQuery": true,
+            "restricted": false,
+            "description": ""
+        }
+    ]
+}

@@ -1,0 +1,71 @@
+#!/usr/bin/env node
+
+var fs = require('fs');
+var _ = require('underscore');
+var program = require('commander');
+var Terapeak = require('../');
+var docs = require('../api.json');
+
+// program options
+
+program
+    .version(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version)
+    .option('-c, --category <categoryid>', 'search by specific categoryid', parseInt)
+    .option('-q, --query <keyword>', 'search by keyword or phrase')
+    .option('-k, --key <api_key>', 'api key')
+    .option('-r, --restricted', 'use restricted api endpoint')
+    .usage('method [options]');
+
+_.each(docs.methods, function(method) {
+    program
+        .command(method.name)
+        .on('--help', function() {
+            var docRoot = method.restricted ? docs.documentation.restrictedRoot : docs.documentation.researchRoot;
+            console.log('  See ' + docRoot + method.name);
+            // TODO: Load and render some of the help page into the console
+        })
+        .action(function(options) {
+            var apiKey = program.api_key || process.env.TERAPEAK_KEY;
+            if (!apiKey) {
+                console.log('Must specify Terapeak API key with --key option or environment variable TERAPEAK_KEY.');
+                return;
+            }
+
+            var options = {};
+
+            if (program.query) {
+                options.SearchQuery = {
+                    Keywords: program.query
+                };
+                if (program.category) {
+                    options.SearchQuery.CategoryLimit = [
+                        {
+                            CategoryID: program.category
+                        }
+                    ];
+                }
+            } else if (program.category) {
+                options.CategoryQuery = {
+                    Categories: [
+                        {
+                            CategoryID: program.category
+                        }
+                    ]
+                };
+            }
+
+            debugger;
+            var terapeak = new Terapeak(apiKey, program.restricted);
+
+            var apiMethod = Terapeak.prototype[method.name[0].toLowerCase() + method.name.slice(1)];
+            apiMethod.call(terapeak, options, function(err, result, meta) {
+                if (err) {
+                    console.log('Error: ' + err);
+                    return;
+                }
+                console.log(JSON.stringify(result, null, 4));
+            });
+        });
+});
+
+program.parse(process.argv);

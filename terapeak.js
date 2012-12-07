@@ -53,6 +53,12 @@ Terapeak.prototype.getCategorySellers = function(options, callback) {
             callback(err);
             return;
         }
+
+        if (!result.CategoryData) {
+            // result is actually an error
+            callback(JSON.stringify(result, null, 2));
+            return;
+        }
         
         meta.category_id = result.CategoryData.CategorySellers.category_id;
         meta.NumPages = result.CategoryData.CategorySellers.Stats.NumPages;
@@ -132,6 +138,8 @@ Terapeak.prototype.getTopTitles = function(options, callback) {
             callback(err);
             return;
         }
+
+        debugger;
         
         meta.NumPages = result.TopTitles.Stats.NumPages;
         meta.NumEntries = result.TopTitles.Stats.NumEntries;
@@ -156,6 +164,38 @@ Terapeak.prototype.getResearchResults = function(options, callback) {
         
         var statistics = result.SearchResults.Statistics;
         callback(null, statistics, meta);
+    });
+};
+
+Terapeak.prototype.getResearchSellers = function(options, callback) {
+    var self = this;
+    self._call('GetResearchSellers', options, function(err, result, meta) {
+        if (err) {
+            callback(err);
+            return;
+        }
+        
+        meta.NumPages = result.Stats.NumPages;
+        meta.NumSellers = result.Stats.NumSellers;
+        var sellers = result.Sellers.Seller;
+        callback(null, sellers, meta);
+    });
+};
+
+Terapeak.prototype.getResearchTrends = function(options, callback) {
+    var self = this;
+    self._call('GetResearchTrends', options, function(err, result, meta) {
+        if (err) {
+            callback(err);
+            return;
+        }
+        
+        debugger;
+        var dataPoints = result.TrendData;
+        if (!_.isArray(dataPoints.Day)) {
+            dataPoints.Day = [ dataPoints.Day ];
+        }
+        callback(null, dataPoints, meta);
     });
 };
 
