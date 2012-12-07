@@ -17,17 +17,32 @@ program
     .usage('method [options]');
 
 _.each(docs.methods, function(method) {
+
+    var apiMethodName = method.name[0].toLowerCase() + method.name.slice(1);
+    var apiMethod = Terapeak.prototype[apiMethodName];
+
     program
         .command(method.name)
         .on('--help', function() {
             var docRoot = method.restricted ? docs.documentation.restrictedRoot : docs.documentation.researchRoot;
             console.log('  See ' + docRoot + method.name);
+            
+            if(!apiMethod) {
+                console.log('  !! NOT YET IMPLEMENTED !!');
+            }
+
             // TODO: Load and render some of the help page into the console
         })
         .action(function(options) {
+
+            if (!apiMethod) {
+                console.log('\n  Terapeak API method ' + method.name + ' has not yet been implemented by this module. Sorry!\n');
+                return;
+            }
+
             var apiKey = program.api_key || process.env.TERAPEAK_KEY;
             if (!apiKey) {
-                console.log('Must specify Terapeak API key with --key option or environment variable TERAPEAK_KEY.');
+                console.log('\n  Must specify Terapeak API key with --key option or environment variable TERAPEAK_KEY.\n');
                 return;
             }
 
@@ -57,7 +72,6 @@ _.each(docs.methods, function(method) {
             debugger;
             var terapeak = new Terapeak(apiKey, program.restricted);
 
-            var apiMethod = Terapeak.prototype[method.name[0].toLowerCase() + method.name.slice(1)];
             apiMethod.call(terapeak, options, function(err, result, meta) {
                 if (err) {
                     console.log('Error: ' + err);
