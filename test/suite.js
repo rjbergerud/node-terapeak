@@ -95,7 +95,7 @@ describe('terapeak', function() {
         });
     });
     describe('#getResearchResults()', function() {
-        it.only('should call back with research results', function(done) {
+        it('should call back with research results', function(done) {
             this.timeout(10000);
             var options = {
                 SearchQuery: {
@@ -112,7 +112,52 @@ describe('terapeak', function() {
                 assert(parseInt(result.ItemsOffered, 10) >= parseInt(result.ItemsSold), 'More items should be offered than sold.');
                 done();
             });
-        })
-    })
+        });
+    });
+    describe('#getResearchSellers()', function() {
+        it('should call back with seller research results');
+    });
+    describe('#getResearchTrends()', function() {
+        it('should call back with trends');
+    });
+    describe('#getSellerResearchResults()', function() {
+        it('should call back with seller research results');
+    });
+    describe('#getSellerResearchTrends()', function() {
+        it('should call back with seller research trends');
+    });
+    describe('#getSellerTopTitles()', function() {
+        it('should call back with seller top titles');
+    });
+    describe('#getItemConditionLookups()', function() {
+        it('should call back with possible item conditions');
+    });
+    describe('#getItemSpecificSets()', function() {
+        it('should call back with items from a specific set of related items');
+    });
+    describe('#getPriceResearch()', function() {
+        it('should call back with price statistics');
+    });
+    describe('#getSingleItemDetails()', function() {
+        it('should call back with details for a single item');
+    });
+    describe('#getSystemDates()', function() {
+        it('should call back with start and end dates supported by the system');
+    });
+    describe('#getTitleBuilderResults()', function() {
+        it('should call back with popular keywords related to the seed phrase');
+    });
+    describe('#getCategoryItems()', function() {
+        it('should call back with listings for the requested category');
+        it('should fail if not authorized for the restricted api');
+    });
+    describe('#getResearchItems()', function() {
+        it('should call back with listings for the requested keyword');
+        it('should fail if not authorized for the restricted api');
+    });
+    describe('#getSellerResearchItems()', function() {
+        it('should call back with listings for the requested seller criteria');
+        it('should fail if not authorized for the restricted api');
+    });
 });
 
