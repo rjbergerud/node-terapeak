@@ -10,6 +10,10 @@ Don't use this yet -- it's very unstable.
 
         $ npm install -g terapeak
 
+## Test
+
+        $ npm test -g terapeak
+
 ## terapeak(1)
 
         $ terapeak --help for usage
