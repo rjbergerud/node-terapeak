@@ -16,6 +16,8 @@ Don't use this yet -- it's very unstable.
 
 ## terapeak(1)
 
+You will need to specify an api key with the -k option. If you're using the restricted API endpoint with a valid (paid) key, include -r (see --help for details).
+
         $ terapeak --help for usage
 
 ## License
