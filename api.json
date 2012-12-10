@@ -7,26 +7,58 @@
     "methods": [
         {
             "name": "GetCategorySellers",
-            "isCategoryQuery": true,
             "restricted": false,
+            "sampleInput": {
+                "CategoryQuery": {
+                    "Categories": [
+                        {
+                            "CategoryID": "175706"
+                        }
+                    ]
+                }
+            },
             "description": "The GetCategorySellers API call retrieves a list of sellers from a given category allowing you to browse the category by seller."
         },
         {
             "name": "GetCategoryStructure",
-            "isCategoryQuery": true,
             "restricted": false,
+            "sampleInput": {
+                "CategoryQuery": {
+                    "Categories": [
+                        {
+                            "CategoryID": "171485"
+                        }
+                    ]
+                }
+            },
             "description": "The GetCategoryStructure API call retrieves a list of categories, displaying the category depth and result ranking."
         },
         {
             "name": "GetCategoryTopTitles",
-            "isCategoryQuery": true,
             "restricted": false,
+            "sampleInput": {
+                "CategoryQuery": {
+                    "Categories": [
+                        {
+                            "CategoryID": "175706"
+                        }
+                    ]
+                }
+            },
             "description": "The GetCategoryTopTitles API call retrieves a list of top titles from a selected category."
         },
         {
             "name": "GetCategoryTrends",
-            "isCategoryQuery": true,
             "restricted": false,
+            "sampleInput": {
+                "CategoryQuery": {
+                    "Categories": [
+                        {
+                            "CategoryID": "175706"
+                        }
+                    ]
+                }
+            },
             "description": "The GetCategoryTrends API call retrieves graphed trend data for a category search. It can return trends up to 90 days, and breakdowns by week, day, or hour."
         },
         {
@@ -36,16 +68,29 @@
         },
         {
             "name": "GetHotProducts",
-            "isProductQuery": true,
             "restricted": false,
+            "sampleInput": {
+                "ProductQuery": {
+                    "Keywords": "iPad 2",
+                    "Categories": [
+                        {
+                            "CategoryID": "171485"
+                        }
+                    ]
+                }
+            },
             "description": "The GetHotProducts API call retrieves a list of products that are determined to be \"hot\"."
         },
         {
             "name": "GetMediaHotList",
             "restricted": false,
-            "isMediaHotListQuery": true,
             "excludeFromTest": true,
             "excludeFromTestReason": "the test needs a valid media type name",
+            "sampleInput": {
+                "HotList": {
+                    "Media": "dvd"
+                }
+            },
             "description": "The GetMediaHotList API call retrieves a list of media that are determined to be \"hot\"."
         },
         {
@@ -55,40 +100,109 @@
         },
         {
             "name": "GetResearchResults",
-            "isSearchQuery": true,
             "restricted": false,
+            "sampleInput": {
+                "SearchQuery": {
+                    "Keywords": "iPad 2",
+                    "CategoryLimit": [
+                        {
+                            "CategoryID": "171485"
+                        }
+                    ]
+                }
+            },
             "description": "The GetResearchResults API call is used to retrieve basic pre-calculated statistics for a specific set of keywords, along with other filters. This call has REST support."
         },
         {
             "name": "GetResearchSellers",
-            "isSearchQuery": true,
             "restricted": false,
+            "sampleInput": {
+                "SearchQuery": {
+                    "Keywords": "iPad 2",
+                    "CategoryLimit": [
+                        {
+                            "CategoryID": "171485"
+                        }
+                    ]
+                }
+            },
             "description": "The GetResearchSellers API call can be used to retrieve top sellers for a keyword."
         },
         {
             "name": "GetResearchTrends",
-            "isSearchQuery": true,
             "isTrendQuery": true,
             "restricted": false,
+            "sampleInput": {
+                "SearchQuery": {
+                    "Keywords": "iPad 2",
+                    "CategoryLimit": [
+                        {
+                            "CategoryID": "171485"
+                        }
+                    ]
+                }
+            },
             "description": "The GetResearchTrends API call retrieves graphed trend data for a search using the inputs provided in the GetResearchResults call. It can return trends up to 90 days and breakdowns by week, day, or hour."
         },
         {
             "name": "GetSellerResearchResults",
-            "isSellerSearchQuery": true,
             "restricted": false,
+            "sampleInput": {
+                "SearchQuery": {
+                    "CategoryLimit": [
+                        {
+                            "CategoryID": "171485"
+                        }
+                    ],
+                    "SellerFilters": {
+                        "Seller": "gazelle-store",
+                        "CountryFilters": {
+                            "Country": "1"
+                        }
+                    }
+                }
+            },
             "description": "The GetSellerResearchResults API call retrieves seller specific research in a similar manner to the GetResearchResults call. All of the same filters available in the GetResearchResults call are available here, plus the Seller Filters."
         },
         {
             "name": "GetSellerResearchTrends",
-            "isSellerSearchQuery": true,
             "isTrendQuery": true,
             "restricted": false,
+            "sampleInput": {
+                "SearchQuery": {
+                    "CategoryLimit": [
+                        {
+                            "CategoryID": "171485"
+                        }
+                    ],
+                    "SellerFilters": {
+                        "Seller": "gazelle-store",
+                        "CountryFilters": {
+                            "Country": "1"
+                        }
+                    }
+                }
+            },
             "description": "The GetSellerResearchTrends API call retrieves trends based on the seller data similar to the SellerResearchResults call. It returns its data in a similar format to the original GetResearchTrends call."
         },
         {
             "name": "GetSellerTopTitles",
-            "isSellerSearchQuery": true,
             "restricted": false,
+            "sampleInput": {
+                "SearchQuery": {
+                    "CategoryLimit": [
+                        {
+                            "CategoryID": "171485"
+                        }
+                    ],
+                    "SellerFilters": {
+                        "Seller": "gazelle-store",
+                        "CountryFilters": {
+                            "Country": "1"
+                        }
+                    }
+                }
+            },
             "description": "The GetSellerTopTitles API call retrieves a list of all the top items with seller stats from a given category allowing you to browse the category."
         },
         {
@@ -98,23 +212,30 @@
         },
         {
             "name": "GetItemSpecificSets",
-            "isSearchByCategoryQuery": true,
             "restricted": false,
+            "sampleInput": {
+                "SearchQuery": {
+                    "CategoryID": "171485"
+                }
+            },
             "description": "The GetItemSpecificSets API call retrieves a list of all items from a given item specific set so that you can browse items with similar characteristics."
         },
         {
             "name": "GetPriceResearch",
-            "isPriceResearchQuery": true,
             "restricted": false,
+            "sampleInput": {
+                "QueryKeywords": "iPad 2",
+                "IncludeDailyStatistics": true,
+                "ResearchPeriod": 10
+            },
             "description": "The GetPriceResearch API call returns basic pricing statistics for a set of keywords over a variable date range. This call has REST support."
         },
         {
             "name": "GetSingleItemDetails",
-            "isItemQuery": true,
             "restricted": false,
             "excludeFromTest": true,
             "excludeFromTestReason": "Terapeak seems to time out on this call. Investigating.",
-            "testInput": {
+            "sampleInput": {
                 "SearchQuery": {
                     "ItemID": "300822544406",
                     "TransactionID": "755655175020",
@@ -130,9 +251,8 @@
         },
         {
             "name": "GetTitleBuilderResults",
-            "isSearchQuery": true,
             "restricted": false,
-            "testInput": {
+            "sampleInput": {
                 "SearchQuery": {
                     "Keywords": "iPad 2",
                     "CategoryID": "171485"
@@ -142,20 +262,51 @@
         },
         {
             "name": "GetCategoryItems",
-            "isCategoryQuery": true,
             "restricted": true,
+            "sampleInput": {
+                "CategoryQuery": {
+                    "Categories": [
+                        {
+                            "CategoryID": "175706"
+                        }
+                    ]
+                }
+            },
             "description": "The GetCategoryItems API call retrieves a list of all items from a given category allowing you to browse the category."
         },
         {
             "name": "GetResearchItems",
-            "isSearchQuery": true,
             "restricted": true,
+            "sampleInput": {
+                "SearchQuery": {
+                    "Keywords": "iPad 2",
+                    "CategoryLimit": [
+                        {
+                            "CategoryID": "171485"
+                        }
+                    ]
+                }
+            },
             "description": "The GetResearchItems API call can be used to retrieve the raw items found for a search using the inputs provided in the GetResearchResults call. It can return up to 200 items at a time, and returns them in a similar format to the original GetResearchResults call items."
         },
         {
             "name": "GetSellerResearchItems",
-            "isSellerSearchQuery": true,
             "restricted": true,
+            "sampleInput": {
+                "SearchQuery": {
+                    "CategoryLimit": [
+                        {
+                            "CategoryID": "171485"
+                        }
+                    ],
+                    "SellerFilters": {
+                        "Seller": "gazelle-store",
+                        "CountryFilters": {
+                            "Country": "1"
+                        }
+                    }
+                }
+            },
             "description": "The GetSellerResearchItems API call retrieves the raw items found for a search using the inputs provided in the GetSellerResearchResults call. It returns up to 200 items at a time."
         }
     ]
