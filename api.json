@@ -36,14 +36,16 @@
         },
         {
             "name": "GetHotProducts",
-            "isSearchQuery": true,
+            "isProductQuery": true,
             "restricted": false,
             "description": "The GetHotProducts API call retrieves a list of products that are determined to be \"hot\"."
         },
         {
             "name": "GetMediaHotList",
-            "isSearchQuery": true,
             "restricted": false,
+            "isMediaHotListQuery": true,
+            "excludeFromTest": true,
+            "excludeFromTestReason": "the test needs a valid media type name",
             "description": "The GetMediaHotList API call retrieves a list of media that are determined to be \"hot\"."
         },
         {
@@ -72,73 +74,89 @@
         },
         {
             "name": "GetSellerResearchResults",
-            "isSearchQuery": true,
+            "isSellerSearchQuery": true,
             "restricted": false,
             "description": "The GetSellerResearchResults API call retrieves seller specific research in a similar manner to the GetResearchResults call. All of the same filters available in the GetResearchResults call are available here, plus the Seller Filters."
         },
         {
             "name": "GetSellerResearchTrends",
-            "isSearchQuery": true,
+            "isSellerSearchQuery": true,
+            "isTrendQuery": true,
             "restricted": false,
-            "description": ""
+            "description": "The GetSellerResearchTrends API call retrieves trends based on the seller data similar to the SellerResearchResults call. It returns its data in a similar format to the original GetResearchTrends call."
         },
         {
             "name": "GetSellerTopTitles",
-            "isSearchQuery": true,
+            "isSellerSearchQuery": true,
             "restricted": false,
-            "description": ""
+            "description": "The GetSellerTopTitles API call retrieves a list of all the top items with seller stats from a given category allowing you to browse the category."
         },
         {
             "name": "GetItemConditionLookups",
             "restricted": false,
-            "description": ""
+            "description": "The GetItemConditionLookups API call retrieves a list of all possible Item Condition values within a given Category."
         },
         {
             "name": "GetItemSpecificSets",
-            "isSearchQuery": true,
+            "isSearchByCategoryQuery": true,
             "restricted": false,
-            "description": ""
+            "description": "The GetItemSpecificSets API call retrieves a list of all items from a given item specific set so that you can browse items with similar characteristics."
         },
         {
             "name": "GetPriceResearch",
-            "isSearchQuery": true,
+            "isPriceResearchQuery": true,
             "restricted": false,
-            "description": ""
+            "description": "The GetPriceResearch API call returns basic pricing statistics for a set of keywords over a variable date range. This call has REST support."
         },
         {
             "name": "GetSingleItemDetails",
-            "isSearchQuery": true,
+            "isItemQuery": true,
             "restricted": false,
-            "description": ""
+            "excludeFromTest": true,
+            "excludeFromTestReason": "Terapeak seems to time out on this call. Investigating.",
+            "testInput": {
+                "SearchQuery": {
+                    "ItemID": "300822544406",
+                    "TransactionID": "755655175020",
+                    "Date": "2012-12-07"
+                }
+            },
+            "description": "The GetSingleItemDetails API call retrieves the details for a single item."
         },
         {
             "name": "GetSystemDates",
             "restricted": false,
-            "description": ""
+            "description": "The GetSystemDates API call retrieves the start and end dates currently supported by the system."
         },
         {
             "name": "GetTitleBuilderResults",
             "isSearchQuery": true,
             "restricted": false,
-            "description": ""
+            "testInput": {
+                "SearchQuery": {
+                    "Keywords": "iPad 2",
+                    "CategoryID": "171485"
+                }
+            },
+            "description": "The GetTitleBuilderResults API call retrieves popular keywords used in listings based on a seed keyword phrase. It researches a sample of listings and returns metrics such as average, minimum, and maximum price."
         },
         {
             "name": "GetCategoryItems",
             "isCategoryQuery": true,
-            "restricted": false,
-            "description": ""
+            "restricted": true,
+            "description": "The GetCategoryItems API call retrieves a list of all items from a given category allowing you to browse the category."
         },
         {
             "name": "GetResearchItems",
             "isSearchQuery": true,
-            "restricted": false,
-            "description": ""
+            "restricted": true,
+            "description": "The GetResearchItems API call can be used to retrieve the raw items found for a search using the inputs provided in the GetResearchResults call. It can return up to 200 items at a time, and returns them in a similar format to the original GetResearchResults call items."
         },
         {
             "name": "GetSellerResearchItems",
-            "isSearchQuery": true,
-            "restricted": false,
-            "description": ""
+            "isSellerSearchQuery": true,
+            "restricted": true,
+            "description": "The GetSellerResearchItems API call retrieves the raw items found for a search using the inputs provided in the GetSellerResearchResults call. It returns up to 200 items at a time."
         }
     ]
 }

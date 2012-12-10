@@ -36,7 +36,7 @@ var RESTRICTED_API_GET_PATH = 'http://api.terapeak.com/v1/research/restricted';
 var PUBLIC_API_POST_PATH = 'http://api.terapeak.com/v1/research/xml';
 var PUBLIC_API_GET_PATH = 'http://api.terapeak.com/v1/research';
 var META_DATA_FIELDS = [
-    'Timestamp', 'ProcessingTime', 'ImageURL', 'LinkURL'
+    'Timestamp', 'ProcessingTime', 'ImageURL', 'LinkURL', 'CallsRemaining', 'CallLimitResetTime', 'Warnings'
 ];
 
 
@@ -54,17 +54,13 @@ Terapeak.prototype.getCategorySellers = function(options, callback) {
             return;
         }
 
-        if (!result.CategoryData) {
+        if (!result.CategoryData || !result.CategoryData.CategorySellers) {
             // result is actually an error
             callback(JSON.stringify(result, null, 2));
             return;
         }
-        
-        meta.category_id = result.CategoryData.CategorySellers.category_id;
-        meta.NumPages = result.CategoryData.CategorySellers.Stats.NumPages;
-        meta.NumSellers = result.CategoryData.CategorySellers.Stats.NumSellers;
-        var sellers = result.CategoryData.CategorySellers.Sellers.Seller;
-        callback(null, sellers, meta);
+
+        getSellerResults(err, result.CategoryData.CategorySellers, meta, callback);
     });
 };
 
@@ -76,7 +72,6 @@ Terapeak.prototype.getCategoryStructure = function(options, callback) {
             return;
         }
         
-        meta.category_id = result.CategoryData.CategoryStructure.category_id;
         var categories = result.CategoryData.CategoryStructure.Category;
         callback(null, categories, meta);
     });
@@ -85,15 +80,7 @@ Terapeak.prototype.getCategoryStructure = function(options, callback) {
 Terapeak.prototype.getCategoryTopTitles = function(options, callback) {
     var self = this;
     self._call('GetCategoryTopTitles', options, function(err, result, meta) {
-        if (err) {
-            callback(err);
-            return;
-        }
-        
-        meta.NumPages = result.Stats.NumPages;
-        meta.NumTitles = result.Stats.NumTitles;
-        var titles = result.TopTitles.TopTitle;
-        callback(null, titles, meta);
+        getTitleResults(err, result, meta, callback);
     });
 };
 
@@ -131,26 +118,49 @@ Terapeak.prototype.getCategoryHotList = function(options, callback) {
     });
 };
 
-Terapeak.prototype.getTopTitles = function(options, callback) {
+Terapeak.prototype.getHotProducts = function(options, callback) {
     var self = this;
-    self._call('GetTopTitles', options, function(err, result, meta) {
+    self._call('GetHotProducts', options, function(err, result, meta) {
         if (err) {
             callback(err);
             return;
         }
 
-        debugger;
-        
-        meta.NumPages = result.TopTitles.Stats.NumPages;
-        meta.NumEntries = result.TopTitles.Stats.NumEntries;
-        if (result.ModifiedQuery && result.ModifiedQuery.RemovedWords) {
-            meta.RemovedWords = result.ModifiedQuery.RemovedWords;
+        debugger;        
+
+        meta.NumPages = result.HotProducts.Stats.NumPages;
+        meta.NumEntries = result.HotProducts.Stats.NumEntries;
+        meta.ProductsDate = result.HotProducts.Stats.ProductsDate;
+        var products = result.HotProducts.Product;
+        if (!_.isArray(products)) {
+            products = [ products ];
         }
-        var dataPoints = result.TopTitles.Title;
+        callback(null, products, meta);
+    });
+};
+
+Terapeak.prototype.getMediaHotList = function(options, callback) {
+    var self = this;
+    self._call('GetMediaHotList', options, function(err, result, meta) {
+        if (err) {
+            callback(err);
+            return;
+        }
+        
+        meta.ThisMonth = result.HotList.Stats.ThisMonth;
+        meta.PrevMonth = result.HotList.Stats.PrevMonth;
+        var dataPoints = result.HotList.Media;
         if (!_.isArray(dataPoints)) {
             dataPoints = [ dataPoints ];
         }
         callback(null, dataPoints, meta);
+    });
+};
+
+Terapeak.prototype.getTopTitles = function(options, callback) {
+    var self = this;
+    self._call('GetTopTitles', options, function(err, result, meta) {
+        getTitleResults(err, result, meta, callback);
     });
 };
 
@@ -170,32 +180,175 @@ Terapeak.prototype.getResearchResults = function(options, callback) {
 Terapeak.prototype.getResearchSellers = function(options, callback) {
     var self = this;
     self._call('GetResearchSellers', options, function(err, result, meta) {
-        if (err) {
-            callback(err);
-            return;
-        }
-        
-        meta.NumPages = result.Stats.NumPages;
-        meta.NumSellers = result.Stats.NumSellers;
-        var sellers = result.Sellers.Seller;
-        callback(null, sellers, meta);
+        getSellerResults(err, result, meta, callback);
     });
 };
 
 Terapeak.prototype.getResearchTrends = function(options, callback) {
     var self = this;
     self._call('GetResearchTrends', options, function(err, result, meta) {
+        getTrendResults(err, result, meta, callback);
+    });
+};
+
+Terapeak.prototype.getSellerResearchResults = function(options, callback) {
+    var self = this;
+    self._call('GetSellerResearchResults', options, function(err, result, meta) {
+        if (err) {
+            callback(err);
+            return;
+        }
+
+        callback(null, result.SearchResults, meta);
+    });
+};
+
+Terapeak.prototype.getSellerResearchTrends = function(options, callback) {
+    var self = this;
+    self._call('GetSellerResearchTrends', options, function(err, result, meta) {
+        getTrendResults(err, result, meta, callback);
+    });
+};
+
+Terapeak.prototype.getSellerTopTitles = function(options, callback) {
+    var self = this;
+    self._call('GetSellerTopTitles', options, function(err, result, meta) {
+        getTitleResults(err, result, meta, callback);
+    });
+};
+
+Terapeak.prototype.getItemConditionLookups = function(options, callback) {
+    var self = this;
+    self._call('GetItemConditionLookups', options, function(err, result, meta) {
+        if (err) {
+            callback(err);
+            return;
+        }
+
+        callback(null, result.ItemConditionLookups.RollupValues.Value, meta);
+    });
+};
+
+Terapeak.prototype.getItemSpecificSets = function(options, callback) {
+    var self = this;
+    self._call('GetItemSpecificSets', options, function(err, result, meta) {
+        if (err) {
+            callback(err);
+            return;
+        }
+
+        debugger;
+        callback(null, result.ItemSpecificsSets.ItemSpecificsSet.Attributes.Attribute, meta);
+    });
+};
+
+Terapeak.prototype.getPriceResearch = function(options, callback) {
+    var self = this;
+    self._call('GetPriceResearch', options, function(err, result, meta) {
         if (err) {
             callback(err);
             return;
         }
         
-        debugger;
-        var dataPoints = result.TrendData;
-        if (!_.isArray(dataPoints.Day)) {
-            dataPoints.Day = [ dataPoints.Day ];
+        var priceResearchResults = {
+            Statistics: result.Statistics,
+            DailyStatistics: result.DailyStatistics
         }
-        callback(null, dataPoints, meta);
+        callback(null, priceResearchResults, meta);
+    });
+};
+
+Terapeak.prototype.getSingleItemDetails = function(options, callback) {
+    var self = this;
+    self._call('GetSingleItemDetails', options, function(err, result, meta) {
+        if (err) {
+            callback(err);
+            return;
+        }
+        
+        callback(null, results.SearchResults, meta);
+    });
+};
+
+Terapeak.prototype.getSingleItemDetails = function(options, callback) {
+    var self = this;
+    self._call('GetSingleItemDetails', options, function(err, result, meta) {
+        if (err) {
+            callback(err);
+            return;
+        }
+        
+        callback(null, results.SearchResults, meta);
+    });
+};
+
+Terapeak.prototype.getSystemDates = function(options, callback) {
+    var self = this;
+    self._call('GetSystemDates', options, function(err, result, meta) {
+        if (err) {
+            callback(err);
+            return;
+        }
+        
+        callback(null, result.SystemDates, meta);
+    });
+};
+
+Terapeak.prototype.getTitleBuilderResults = function(options, callback) {
+    var self = this;
+    self._call('GetTitleBuilderResults', options, function(err, result, meta) {
+        if (err) {
+            callback(err);
+            return;
+        }
+
+        var titleBuilderResults = {
+            Totals: result.TitlebuilderResults.Totals,
+            Words: result.TitlebuilderResults.Words.Word
+        };
+        
+        callback(null, titleBuilderResults, meta);
+    });
+};
+
+Terapeak.prototype.getCategoryItems = function(options, callback) {
+    var self = this;
+    self._call('GetCategoryItems', options, function(err, result, meta) {
+        if (err) {
+            callback(err);
+            return;
+        }
+
+        debugger;
+
+        meta.NumPages = result.CategoryData.CategoryItems.Stats.NumPages;
+        meta.NumSellers = result.CategoryData.CategoryItems.Stats.NumSellers;
+
+        callback(null, result.CategoryData.CategoryItems.Items.Item, meta);
+    });
+};
+
+Terapeak.prototype.getResearchItems = function(options, callback) {
+    var self = this;
+    self._call('GetResearchItems', options, function(err, result, meta) {
+        if (err) {
+            callback(err);
+            return;
+        }
+        
+        callback(null, result.Items.Item, meta);
+    });
+};
+
+Terapeak.prototype.getSellerResearchItems = function(options, callback) {
+    var self = this;
+    self._call('GetSellerResearchItems', options, function(err, result, meta) {
+        if (err) {
+            callback(err);
+            return;
+        }
+        
+        callback(null, result.Items.Item, meta);
     });
 };
 
@@ -226,6 +379,65 @@ Terapeak.prototype._call = function(name, options, callback) {
     });
 };
 
+function getSellerResults(err, result, meta, callback) {
+    if (err) {
+        callback(err);
+        return;
+    }
+    
+    meta.NumPages = result.Stats.NumPages;
+    meta.NumSellers = result.Stats.NumSellers;
+    var sellers = result.Sellers.Seller;
+    callback(null, sellers, meta);
+}
+
+function getTitleResults(err, result, meta, callback) {
+    if (err) {
+        callback(err);
+        return;
+    }
+
+    var stats = result.Stats || result.TopTitles.Stats;
+    
+    meta.NumPages = stats.NumPages;
+    meta.NumEntries = stats.NumEntries;
+    meta.NumTitles = stats.NumTitles;
+    if (result.ModifiedQuery && result.ModifiedQuery.RemovedWords) {
+        meta.RemovedWords = result.ModifiedQuery.RemovedWords;
+    }
+    var dataPoints = result.TopTitles.Title || result.TopTitles.TopTitle;
+    if (!_.isArray(dataPoints)) {
+        dataPoints = [ dataPoints ];
+    }
+    callback(null, dataPoints, meta);
+}
+
+function getTrendResults(err, result, meta, callback) {
+    if (err) {
+        callback(err);
+        return;
+    }
+    
+    var dataPoints = result.TrendData;
+    if (!_.isArray(dataPoints.Day)) {
+        dataPoints.Day = [ dataPoints.Day ];
+    }
+    callback(null, dataPoints, meta);
+}
+
+function getSellerResults(err, result, meta, callback) {
+    if (err) {
+        callback(err);
+        return;
+    }
+    
+    meta.NumPages = result.Stats.NumPages;
+    meta.NumSellers = result.Stats.NumSellers;
+    var sellers = result.Sellers.Seller;
+    callback(null, sellers, meta);
+}
+
+
 function parseResults(callName, xml, callback) {
 
     var parser = new xml2js.Parser();
@@ -252,7 +464,13 @@ function parseResults(callName, xml, callback) {
 
         var data = flattenResults(dataRoot);
 
-        callback(null, data, meta);
+        err = data.Errors;
+
+        if (err && err.Error && err.Error._) {
+            err = err.Error._; // return the error message as the error
+        }
+
+        callback(err, data, meta);
     });    
 }
 
