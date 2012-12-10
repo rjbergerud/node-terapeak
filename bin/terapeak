@@ -12,9 +12,13 @@ program
     .version(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version)
     .option('-c, --category <categoryid>', 'search by specific categoryid', parseInt)
     .option('-q, --query <keyword>', 'search by keyword or phrase')
-    .option('-k, --key <api_key>', 'api key')
-    .option('-r, --restricted', 'use restricted api endpoint')
+    .option('-k, --key <api_key>', 'api key, or use environment variable TERAPEAK_KEY')
+    .option('-r, --restricted', 'use restricted api endpoint, or use environment variable TERAPEAK_RESTRICTED')
     .usage('method [options]');
+
+if (process.env.TERAPEAK_RESTRICTED) {
+    program.restricted = true;
+}
 
 _.each(docs.methods, function(method) {
 
@@ -25,6 +29,7 @@ _.each(docs.methods, function(method) {
         .command(method.name)
         .on('--help', function() {
             var docRoot = method.restricted ? docs.documentation.restrictedRoot : docs.documentation.researchRoot;
+            console.log('  ' + method.description);
             console.log('  See ' + docRoot + method.name);
             
             if(!apiMethod) {
@@ -33,6 +38,7 @@ _.each(docs.methods, function(method) {
 
             // TODO: Load and render some of the help page into the console
         })
+        //.description(method.description.slice(0,77) + '...')
         .action(function(options) {
 
             if (!apiMethod) {

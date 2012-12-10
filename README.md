@@ -2,9 +2,9 @@
 
 Node module wrapping the TeraPeak API. See https://developer.terapeak.com for API documentations
 
-## Status
+## Status: Unstable
 
-Don't use this yet -- it's very unstable. 
+Use this with caution. The basic tests are all passing, but you might find some misalignments between the official docs and the input and output structures. See api.json for some sample inputs that are used to test each method.
 
 ## Install
 
@@ -12,13 +12,25 @@ Don't use this yet -- it's very unstable.
 
 ## Test
 
-        $ npm test -g terapeak
+Using a non-restricted api key:
+
+        $ TERAPEAK_KEY=my_secret_api_key npm test -g terapeak
+
+Using a restricted api key:
+        
+        $ TERAPEAK_KEY=my_secret_api_key TERAPEAK_RESTRICTED=true npm test -g terapeak
 
 ## terapeak(1)
 
-You will need to specify an api key with the -k option. If you're using the restricted API endpoint with a valid (paid) key, include -r (see --help for details). For complete usage, run:
+You will need to specify an api key with the -k option. If you're using the restricted API endpoint with a valid (paid) key, include -r (see --help for details). For complete usage, including a list of commands run:
 
         $ terapeak --help
+
+For help on a specific command, run:
+
+        $ terapeak [command] --help
+
+Currently, this has pretty limited capabilities. You can run simple keyword and category queries. But for anything complicated, you should probably use the library directly instead of the cli.
 
 ## License
 
