@@ -29,8 +29,9 @@ var request = require('request');
 var xml2js = require('xml2js');
 var xmlbuilder = require('xmlbuilder');
 var _ = require('underscore');
+var spec = require('./api.json');
 
-var API_VERSION = 2;
+var API_VERSION = spec.apiVersion || 2;
 var RESTRICTED_API_POST_PATH = 'http://api.terapeak.com/v1/research/xml/restricted';
 var RESTRICTED_API_GET_PATH = 'http://api.terapeak.com/v1/research/restricted';
 var PUBLIC_API_POST_PATH = 'http://api.terapeak.com/v1/research/xml';
@@ -39,6 +40,17 @@ var META_DATA_FIELDS = [
     'Timestamp', 'ProcessingTime', 'ImageURL', 'LinkURL', 'CallsRemaining', 'CallLimitResetTime', 'Warnings'
 ];
 
+// Initialize API method specification lookup:
+
+var methodsByName = {};
+
+_.each(spec.methods, function(method) {
+    methodsByName[method.name] = method;
+});
+
+function getMethod (name) {
+    return methodsByName[name];
+}
 
 
 function Terapeak(apikey, restrictedApi) {
@@ -124,9 +136,7 @@ Terapeak.prototype.getHotProducts = function(options, callback) {
         if (err) {
             callback(err);
             return;
-        }
-
-        debugger;        
+        }   
 
         meta.NumPages = result.HotProducts.Stats.NumPages;
         meta.NumEntries = result.HotProducts.Stats.NumEntries;
@@ -237,7 +247,6 @@ Terapeak.prototype.getItemSpecificSets = function(options, callback) {
             return;
         }
 
-        debugger;
         callback(null, result.ItemSpecificsSets.ItemSpecificsSet.Attributes.Attribute, meta);
     });
 };
@@ -277,8 +286,8 @@ Terapeak.prototype.getSingleItemDetails = function(options, callback) {
             callback(err);
             return;
         }
-        
-        callback(null, results.SearchResults, meta);
+
+        callback(null, result.SearchResults, meta);
     });
 };
 
@@ -319,8 +328,6 @@ Terapeak.prototype.getCategoryItems = function(options, callback) {
             return;
         }
 
-        debugger;
-
         meta.NumPages = result.CategoryData.CategoryItems.Stats.NumPages;
         meta.NumSellers = result.CategoryData.CategoryItems.Stats.NumSellers;
 
@@ -357,7 +364,10 @@ Terapeak.prototype._call = function(name, options, callback) {
     var self = this;
 
     var xml = xmlbuilder.create(name);
-    xml.ele('Version').txt(API_VERSION);
+
+    var version = getMethod(name).apiVersion || spec.apiVersion;
+
+    xml.ele('Version').txt(version);
 
     addSimpleXmlOption(xml, options);
 

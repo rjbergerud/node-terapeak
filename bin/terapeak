@@ -75,7 +75,6 @@ _.each(docs.methods, function(method) {
                 };
             }
 
-            debugger;
             var terapeak = new Terapeak(apiKey, program.restricted);
 
             apiMethod.call(terapeak, options, function(err, result, meta) {

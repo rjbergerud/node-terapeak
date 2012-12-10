@@ -4,6 +4,7 @@
         "researchRoot": "https://developer.terapeak.com/docs/read/researchapi/",
         "restrictedRoot": "https://developer.terapeak.com/docs/read/researchapi/restricted_calls/"
     },
+    "apiVersion": "2",
     "methods": [
         {
             "name": "GetCategorySellers",
@@ -84,11 +85,9 @@
         {
             "name": "GetMediaHotList",
             "restricted": false,
-            "excludeFromTest": true,
-            "excludeFromTestReason": "the test needs a valid media type name",
             "sampleInput": {
                 "HotList": {
-                    "Media": "dvd"
+                    "Media": "dvds"
                 }
             },
             "description": "The GetMediaHotList API call retrieves a list of media that are determined to be \"hot\"."
@@ -233,8 +232,7 @@
         {
             "name": "GetSingleItemDetails",
             "restricted": false,
-            "excludeFromTest": true,
-            "excludeFromTestReason": "Terapeak seems to time out on this call. Investigating.",
+            "apiVersion": "3",
             "sampleInput": {
                 "SearchQuery": {
                     "ItemID": "300822544406",
