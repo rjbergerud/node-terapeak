@@ -430,10 +430,17 @@ function getSellerResults(err, result, meta, callback) {
         callback(err);
         return;
     }
-    
-    meta.NumPages = result.Stats.NumPages;
-    meta.NumSellers = result.Stats.NumSellers;
-    var sellers = result.Sellers.Seller;
+
+    var sellers = [];
+
+    if (result.Stats) {
+        meta.NumPages = result.Stats.NumPages;
+        meta.NumSellers = result.Stats.NumSellers;
+        sellers = result.Sellers.Seller;
+    } else {
+        meta.NumPages = 0;
+        meta.NumSellers = 0;
+    }
     callback(null, sellers, meta);
 }
 

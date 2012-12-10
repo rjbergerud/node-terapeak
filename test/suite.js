@@ -16,6 +16,12 @@ if (process.env.TERAPEAK_RESTRICTED) {
     restrictedApi = true;
 }
 
+var API_DELAY = 1000; // delay between API calls to stay under API calls / second limitations
+
+if (!restrictedApi) {
+    API_DELAY = 2000; // API currently allows 2 calls/sec, but just to be safe use 0.5 / sec.
+}
+
 var terapeak = new Terapeak(apiKey, restrictedApi);
 
 describe('terapeak', function() {
@@ -42,55 +48,59 @@ describe('terapeak', function() {
 
                 var options = method.sampleInput || {};
 
-                apiMethod.call(terapeak, options, function(err, result, meta) {
+                var testMethod = function() {
+                    apiMethod.call(terapeak, options, function(err, result, meta) {
 
-                    assert(null === err, err);
+                        assert(null === err, err);
 
-                    switch (method.name) {
-                        case 'GetResearchResults':
-                            assert(parseInt(result.ItemsOffered, 10) >= parseInt(result.ItemsSold), 
-                                'More items should be offered than sold.');
-                            break;
-                        case 'GetSellerResearchResults':
-                            assert(null !== result.Statistics, 
-                                'Seller results should include summary statistics.');
-                            break;
-                        case 'GetPriceResearch':
-                            assert(null !== result.Statistics, 
-                                'Price research results should include summary statistics.');
-                            if (options.IncludeDailyStatistics) {
-                                assert(null !== result.DailyStatistics, 
-                                    'Price research results should include daily statistics as requested.');
-                            }
-                            break;
-                        case 'GetTitleBuilderResults':
-                            assert(null !== result.Totals, 
-                                'Title builder results include summary totals');
-                            assert(0 < result.Words.length, 
-                                'Title builder results include a non-empty set of words');
-                            break;
-                        case 'GetSingleItemDetails':
-                            assert(result.Title.length > 0, 
-                                'Item has valid title');
-                            break;
-                        case 'GetSystemDates':
-                            assert(Date.parse(result.StartDate) < Date.parse(result.EndDate), 
-                                'System end date should be greater than system start date.');    
-                            break;
-                        case 'GetResearchTrends':
-                        case 'GetSellerResearchTrends':
-                            assert(0 < result.Day.length, 
-                                'Results should contain at least one day');
-                            assert.equal(24, result.Day[0].Hour.length, 
-                                'Day results should contain 24 hourly results');
-                            break;
-                        default:
-                            assert(0 < result.length, 
-                                'Results should contain multiple values.');
-                            break;
-                    }
-                    done();
-                });
+                        switch (method.name) {
+                            case 'GetResearchResults':
+                                assert(parseInt(result.ItemsOffered, 10) >= parseInt(result.ItemsSold), 
+                                    'More items should be offered than sold.');
+                                break;
+                            case 'GetSellerResearchResults':
+                                assert(null !== result.Statistics, 
+                                    'Seller results should include summary statistics.');
+                                break;
+                            case 'GetPriceResearch':
+                                assert(null !== result.Statistics, 
+                                    'Price research results should include summary statistics.');
+                                if (options.IncludeDailyStatistics) {
+                                    assert(null !== result.DailyStatistics, 
+                                        'Price research results should include daily statistics as requested.');
+                                }
+                                break;
+                            case 'GetTitleBuilderResults':
+                                assert(null !== result.Totals, 
+                                    'Title builder results include summary totals');
+                                assert(0 < result.Words.length, 
+                                    'Title builder results include a non-empty set of words');
+                                break;
+                            case 'GetSingleItemDetails':
+                                assert(result.Title.length > 0, 
+                                    'Item has valid title');
+                                break;
+                            case 'GetSystemDates':
+                                assert(Date.parse(result.StartDate) < Date.parse(result.EndDate), 
+                                    'System end date should be greater than system start date.');    
+                                break;
+                            case 'GetResearchTrends':
+                            case 'GetSellerResearchTrends':
+                                assert(0 < result.Day.length, 
+                                    'Results should contain at least one day');
+                                assert.equal(24, result.Day[0].Hour.length, 
+                                    'Day results should contain 24 hourly results');
+                                break;
+                            default:
+                                assert(0 < result.length, 
+                                    'Results should contain multiple values.');
+                                break;
+                        }
+                        done();
+                    });
+                };
+
+                setTimeout(testMethod, API_DELAY);
             });
         });
     });
