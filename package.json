@@ -1,8 +1,8 @@
 {
   "author": "Ben Blair <benblair@gmail.com>",
   "name": "terapeak",
-  "description": "Unofficial wrapper for the TeraPeak API (see https://developer.terapeak.com).",
-  "version": "0.1.1",
+  "description": "Unofficial wrapper for the TeraPeak API (see https://terapeak.mashery.com).",
+  "version": "0.1.2",
   "repository": {
     "type": "git",
     "url": "git://github.com/benblair/node-terapeak.git"
@@ -31,7 +31,7 @@
   },
   "licenses": [ {
     "type": "MIT",
-    "url": "http://www.opensource.org/licenses/MIT" 
+    "url": "http://www.opensource.org/licenses/MIT"
   } ],
   "keywords": ["terapeak", "ebay"]
 }
