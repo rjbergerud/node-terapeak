@@ -1,21 +1,21 @@
 /*
- * Node module wrapping the TeraPeak (R) API. See https://developer.terapeak.com for API documentations 
+ * Node module wrapping the TeraPeak (R) API. See https://developer.terapeak.com for API documentations
  * This module is not affiliated with or supported by TeraPeak (R).
- * 
+ *
  * (The MIT License)
- * 
+ *
  * Copyright (c) 2012 Ben Blair
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
  * the Software, and to permit persons to whom the Software is furnished to do so,
  * subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
@@ -83,7 +83,7 @@ Terapeak.prototype.getCategoryStructure = function(options, callback) {
             callback(err);
             return;
         }
-        
+
         var categories = result.CategoryData.CategoryStructure.Category;
         callback(null, categories, meta);
     });
@@ -103,7 +103,7 @@ Terapeak.prototype.getCategoryTrends = function(options, callback) {
             callback(err);
             return;
         }
-        
+
         var dataPoints = result.TrendData.Category.DataPoint;
         if (!_.isArray(dataPoints)) {
             dataPoints = [ dataPoints ];
@@ -119,7 +119,7 @@ Terapeak.prototype.getCategoryHotList = function(options, callback) {
             callback(err);
             return;
         }
-        
+
         meta.NumPages = result.HotList.Stats.NumPages;
         meta.NumEntries = result.HotList.Stats.NumEntries;
         var dataPoints = result.HotList.Category;
@@ -136,7 +136,7 @@ Terapeak.prototype.getHotProducts = function(options, callback) {
         if (err) {
             callback(err);
             return;
-        }   
+        }
 
         meta.NumPages = result.HotProducts.Stats.NumPages;
         meta.NumEntries = result.HotProducts.Stats.NumEntries;
@@ -156,7 +156,7 @@ Terapeak.prototype.getMediaHotList = function(options, callback) {
             callback(err);
             return;
         }
-        
+
         meta.ThisMonth = result.HotList.Stats.ThisMonth;
         meta.PrevMonth = result.HotList.Stats.PrevMonth;
         var dataPoints = result.HotList.Media;
@@ -181,7 +181,7 @@ Terapeak.prototype.getResearchResults = function(options, callback) {
             callback(err);
             return;
         }
-        
+
         var statistics = result.SearchResults.Statistics;
         callback(null, statistics, meta);
     });
@@ -258,7 +258,7 @@ Terapeak.prototype.getPriceResearch = function(options, callback) {
             callback(err);
             return;
         }
-        
+
         var priceResearchResults = {
             Statistics: result.Statistics,
             DailyStatistics: result.DailyStatistics
@@ -274,7 +274,7 @@ Terapeak.prototype.getSingleItemDetails = function(options, callback) {
             callback(err);
             return;
         }
-        
+
         callback(null, results.SearchResults, meta);
     });
 };
@@ -298,7 +298,7 @@ Terapeak.prototype.getSystemDates = function(options, callback) {
             callback(err);
             return;
         }
-        
+
         callback(null, result.SystemDates, meta);
     });
 };
@@ -315,7 +315,7 @@ Terapeak.prototype.getTitleBuilderResults = function(options, callback) {
             Totals: result.TitlebuilderResults.Totals,
             Words: result.TitlebuilderResults.Words.Word
         };
-        
+
         callback(null, titleBuilderResults, meta);
     });
 };
@@ -342,7 +342,7 @@ Terapeak.prototype.getResearchItems = function(options, callback) {
             callback(err);
             return;
         }
-        
+
         callback(null, result.Items.Item, meta);
     });
 };
@@ -354,13 +354,13 @@ Terapeak.prototype.getSellerResearchItems = function(options, callback) {
             callback(err);
             return;
         }
-        
+
         callback(null, result.Items.Item, meta);
     });
 };
 
 Terapeak.prototype._call = function(name, options, callback) {
-    
+
     var self = this;
 
     var xml = xmlbuilder.create(name);
@@ -389,18 +389,6 @@ Terapeak.prototype._call = function(name, options, callback) {
     });
 };
 
-function getSellerResults(err, result, meta, callback) {
-    if (err) {
-        callback(err);
-        return;
-    }
-    
-    meta.NumPages = result.Stats.NumPages;
-    meta.NumSellers = result.Stats.NumSellers;
-    var sellers = result.Sellers.Seller;
-    callback(null, sellers, meta);
-}
-
 function getTitleResults(err, result, meta, callback) {
     if (err) {
         callback(err);
@@ -408,7 +396,7 @@ function getTitleResults(err, result, meta, callback) {
     }
 
     var stats = result.Stats || result.TopTitles.Stats;
-    
+
     meta.NumPages = stats.NumPages;
     meta.NumEntries = stats.NumEntries;
     meta.NumTitles = stats.NumTitles;
@@ -427,7 +415,7 @@ function getTrendResults(err, result, meta, callback) {
         callback(err);
         return;
     }
-    
+
     var dataPoints = result.TrendData;
     if (!_.isArray(dataPoints.Day)) {
         dataPoints.Day = [ dataPoints.Day ];
@@ -442,10 +430,7 @@ function getSellerResults(err, result, meta, callback) {
     }
 
     var sellers = [];
-
-    if (result.Stats) {
-        meta.NumPages = result.Stats.NumPages;
-        meta.NumSellers = result.Stats.NumSellers;
+    if (result.Sellers) {
         sellers = result.Sellers.Seller;
     } else {
         meta.NumPages = 0;
@@ -488,7 +473,7 @@ function parseResults(callName, xml, callback) {
         }
 
         callback(err, data, meta);
-    });    
+    });
 }
 
 function flattenResults(data) {
